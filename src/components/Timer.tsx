@@ -1,13 +1,32 @@
 import "../styles/timer.css";
-function Timer() {
+interface Props {
+
+    mainPageRef: React.RefObject<HTMLDivElement | null>
+}
+const Timer: React.FC<Props> = ({ mainPageRef }) => {
+    const goToPomodoroSection = (): void => {
+        if (mainPageRef.current != null) {
+          mainPageRef.current.style.background="rgb(186, 73, 73)"
+        }
+    }
+    const goToShortBreakSection = (): void => {
+        if (mainPageRef.current != null) {
+            mainPageRef.current.style.background="rgb(56, 133, 138)"
+        }
+    }
+    const goToLongBreakSection = (): void => {
+        if (mainPageRef.current != null) {
+            mainPageRef.current.style.background="rgb(57, 112, 151)"
+        }
+    }
     return (
 
         <section className="timer-section">
             <div className="timer-container">
                 <div className="buttons-container">
-                    <button className="pomodoro-button">Pomodoro</button>
-                    <button className="shortBreak-button">Short Break</button>
-                    <button className="longBreak-button">Long Break</button>
+                    <button onClick={goToPomodoroSection} className="pomodoro-button">Pomodoro</button>
+                    <button onClick={goToShortBreakSection} className="shortBreak-button">Short Break</button>
+                    <button onClick={goToLongBreakSection} className="longBreak-button">Long Break</button>
                 </div>
                 <div className="howMuchTimeLeft-container">
                     <p className="time-paragraph">25:00</p>

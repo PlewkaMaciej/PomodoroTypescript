@@ -1,13 +1,15 @@
+import React, { useRef } from "react"
 import "../styles/pomodoro.css";
 import Timer from "./Timer";
 function Pomodoro() {
+    const mainPageRef=useRef<HTMLDivElement>(null)
     return (
 
-        <div className="main-app-container">
+        <div ref={mainPageRef} className="main-app-container">
             <header className="heading-container">
                 <h1 className="pomodoro-heading"> Pomofocus</h1>
             </header>
-            <Timer/>
+            <Timer mainPageRef={mainPageRef}/>
         </div>
     );
 }
