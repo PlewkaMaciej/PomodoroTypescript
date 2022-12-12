@@ -2,13 +2,10 @@ import "../styles/timer.css";
 import React, { useEffect, useRef, useState } from "react"
 import skipIcon from "../icons/forward.png"
 interface Props {
-
     mainPageRef: React.RefObject<HTMLDivElement | null>
 }
 
 const Timer: React.FC<Props> = ({ mainPageRef }) => {
-
-
 
     const buttonPomodoroRef = useRef<HTMLButtonElement>(null)
     const buttonShortBreakRef = useRef<HTMLButtonElement>(null)
@@ -17,14 +14,10 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
     const [IsStarted, setStarted] = useState<boolean>(false);
     const [minutes, setMinutes] = useState<number>(25);
     const [seconds, setSeconds] = useState<number>(0);
-
     const [howManyShortBreaks, sethowManyShortBreaks] = useState<number>(0)
     const [whichPhaseIsNow, setWhichPhaseIsNow] = useState<number>(0)
-   
 
-
-
-    useEffect(() => {
+     useEffect(() => {
         if (IsStarted) {
             const TimeInterval = setInterval(() => {
                 setTime((time) => time - 1)
@@ -36,6 +29,7 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
         }
 
     }, [IsStarted])
+
     useEffect(() => {
         setMinutes(() => Math.floor(time / 60))
         setSeconds(() => time % 60)
@@ -44,34 +38,12 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
                 if (howManyShortBreaks < 3) {
 
 
-                    if (mainPageRef.current != null) {
-                        mainPageRef.current.style.background = "rgb(56, 133, 138)"
-                    }
-                    if (buttonPomodoroRef.current != null) {
-                        buttonPomodoroRef.current.style.background = "none"
-                    }
-                    if (buttonShortBreakRef.current != null) {
-                        buttonShortBreakRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-                    }
-                    if (longBreakButtonRef.current != null) {
-                        longBreakButtonRef.current.style.background = "none"
-                    }
+                    shortBreakPhase()
                     setTime(3)
                     setWhichPhaseIsNow(1)
                 }
                 if (howManyShortBreaks === 3) {
-                    if (mainPageRef.current != null) {
-                        mainPageRef.current.style.background = "rgb(57, 112, 151)"
-                    }
-                    if (buttonPomodoroRef.current != null) {
-                        buttonPomodoroRef.current.style.background = "none"
-                    }
-                    if (buttonShortBreakRef.current != null) {
-                        buttonShortBreakRef.current.style.background = "none"
-                    }
-                    if (longBreakButtonRef.current != null) {
-                        longBreakButtonRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-                    }
+                    longBreakPhase()
                     setWhichPhaseIsNow(2)
                     setTime(4)
 
@@ -80,41 +52,15 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
             }
             if (whichPhaseIsNow === 1) {
                 sethowManyShortBreaks((howManyShortBreaks) => howManyShortBreaks + 1)
-
                 setTime(3)
                 setWhichPhaseIsNow(0)
-                if (mainPageRef.current != null) {
-                    mainPageRef.current.style.background = "rgb(186, 73, 73)"
-                }
-                if (buttonPomodoroRef.current != null) {
-                    buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-                }
-                if (buttonShortBreakRef.current != null) {
-                    buttonShortBreakRef.current.style.background = "none"
-                }
-                if (longBreakButtonRef.current != null) {
-                    longBreakButtonRef.current.style.background = "none"
-                }
-
-
-
+               pomodoroPhase()
             }
             if (whichPhaseIsNow === 2) {
                 setTime(4)
                 sethowManyShortBreaks(0)
                 setWhichPhaseIsNow(0)
-                if (mainPageRef.current != null) {
-                    mainPageRef.current.style.background = "rgb(186, 73, 73)"
-                }
-                if (buttonPomodoroRef.current != null) {
-                    buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-                }
-                if (buttonShortBreakRef.current != null) {
-                    buttonShortBreakRef.current.style.background = "none"
-                }
-                if (longBreakButtonRef.current != null) {
-                    longBreakButtonRef.current.style.background = "none"
-                }
+              pomodoroPhase()
             }
         }
     }, [time])
@@ -126,62 +72,26 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
         if (IsStarted) {
             setStarted(false)
         }
-
-
     }
-
 
     const goToPomodoroSection = (): void => {
         setWhichPhaseIsNow(0)
         sethowManyShortBreaks(0)
-        if (mainPageRef.current != null) {
-            mainPageRef.current.style.background = "rgb(186, 73, 73)"
-        }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "none"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "none"
-        }
+      pomodoroPhase()
         setStarted(false)
         setTime(1500)
     }
     const goToShortBreakSection = (): void => {
         setWhichPhaseIsNow(1)
         sethowManyShortBreaks(1)
-        if (mainPageRef.current != null) {
-            mainPageRef.current.style.background = "rgb(56, 133, 138)"
-        }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "none"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "none"
-        }
+        shortBreakPhase()
         setStarted(false)
         setTime(300)
     }
     const goToLongBreakSection = (): void => {
         sethowManyShortBreaks(0)
         setWhichPhaseIsNow(2)
-        if (mainPageRef.current != null) {
-            mainPageRef.current.style.background = "rgb(57, 112, 151)"
-        }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "none"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "none"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
+       longBreakPhase()
         setStarted(false)
         setTime(900)
     }
@@ -189,36 +99,12 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
    const skipPhase = (): void =>{
     if (whichPhaseIsNow === 0) {
         if (howManyShortBreaks < 3) {
-
-
-            if (mainPageRef.current != null) {
-                mainPageRef.current.style.background = "rgb(56, 133, 138)"
-            }
-            if (buttonPomodoroRef.current != null) {
-                buttonPomodoroRef.current.style.background = "none"
-            }
-            if (buttonShortBreakRef.current != null) {
-                buttonShortBreakRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-            }
-            if (longBreakButtonRef.current != null) {
-                longBreakButtonRef.current.style.background = "none"
-            }
+           shortBreakPhase()
             setTime(3)
             setWhichPhaseIsNow(1)
         }
         if (howManyShortBreaks === 3) {
-            if (mainPageRef.current != null) {
-                mainPageRef.current.style.background = "rgb(57, 112, 151)"
-            }
-            if (buttonPomodoroRef.current != null) {
-                buttonPomodoroRef.current.style.background = "none"
-            }
-            if (buttonShortBreakRef.current != null) {
-                buttonShortBreakRef.current.style.background = "none"
-            }
-            if (longBreakButtonRef.current != null) {
-                longBreakButtonRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-            }
+            longBreakPhase()
             setWhichPhaseIsNow(2)
             setTime(4)
 
@@ -227,21 +113,9 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
     }
     if (whichPhaseIsNow === 1) {
         sethowManyShortBreaks((howManyShortBreaks) => howManyShortBreaks + 1)
-
         setTime(3)
         setWhichPhaseIsNow(0)
-        if (mainPageRef.current != null) {
-            mainPageRef.current.style.background = "rgb(186, 73, 73)"
-        }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "none"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "none"
-        }
+        pomodoroPhase()
 
 
 
@@ -250,25 +124,61 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
         setTime(4)
         sethowManyShortBreaks(0)
         setWhichPhaseIsNow(0)
-        if (mainPageRef.current != null) {
-            mainPageRef.current.style.background = "rgb(186, 73, 73)"
-        }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "none"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "none"
-        }
+       pomodoroPhase()
     }
-
    }
 
 
+   const pomodoroPhase = (): void => {
+    if (mainPageRef.current != null) {
+        mainPageRef.current.style.background = "rgb(186, 73, 73)"
+    }
+    if (buttonPomodoroRef.current != null) {
+        buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
+    }
+    if (buttonShortBreakRef.current != null) {
+        buttonShortBreakRef.current.style.background = "none"
+    }
+    if (longBreakButtonRef.current != null) {
+        longBreakButtonRef.current.style.background = "none"
+    }
+
+}
+
+const shortBreakPhase = (): void => {
+    if (mainPageRef.current != null) {
+        mainPageRef.current.style.background = "rgb(56, 133, 138)"
+    }
+    if (buttonPomodoroRef.current != null) {
+        buttonPomodoroRef.current.style.background = "none"
+    }
+    if (buttonShortBreakRef.current != null) {
+        buttonShortBreakRef.current.style.background = "rgba(255, 255, 255, 0.1)"
+    }
+    if (longBreakButtonRef.current != null) {
+        longBreakButtonRef.current.style.background = "none"
+    }
 
 
+}
+
+const longBreakPhase = (): void => {
+   
+    if (mainPageRef.current != null) {
+        mainPageRef.current.style.background = "rgb(57, 112, 151)"
+    }
+    if (buttonPomodoroRef.current != null) {
+        buttonPomodoroRef.current.style.background = "none"
+    }
+    if (buttonShortBreakRef.current != null) {
+        buttonShortBreakRef.current.style.background = "none"
+    }
+    if (longBreakButtonRef.current != null) {
+        longBreakButtonRef.current.style.background = "rgba(255, 255, 255, 0.1)"
+    }
+
+    
+}
 
     return (
 
