@@ -1,0 +1,66 @@
+.task-main-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2%;
+    font-family: "good";
+    color: white;
+    font-size: 22px;
+}
+@font-face {
+    font-family: good;
+    src: url(../font/good.ttf);
+}
+.newTaskInputRef{
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    margin-left: 7%;
+    margin-top: 6%;
+}
+.newTaskInputRef:focus{
+    outline: none;
+}
+.newTaskInputRef::placeholder{
+    font-family: good;
+    font-size: 22px;
+   color: white;}
+   .line-below-input{
+    border-bottom: 2px solid white;
+    width: 500px;
+   }
+   .added-task-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   }
+   .button-for-deleted-tasks{
+    background: transparent;
+    color: white;
+    border: none;
+    margin-top: 6%;
+    margin-left: 8%;
+    width: 15px;
+    height: 15px;
+    font-size: 16px;
+    cursor: pointer;
+   }
+   .button-for-adding-tasks{
+    cursor: pointer;
+    border: none;
+    margin: 20px 0px 0px;
+    padding: 0px 12px;
+    border-radius: 4px;
+    box-shadow: rgb(235 235 235) 0px 6px 0px;
+    font-family: 'good';
+    font-size: 22px;
+    height: 55px;
+    color: rgb(186, 73, 73);
+    font-weight: bold;
+    width: 200px;
+    background-color: white;
+    transition: color 0.5s ease-in-out 0s;
+   }

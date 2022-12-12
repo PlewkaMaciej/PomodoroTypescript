@@ -98,4 +98,14 @@
     position: fixed;
     top: 40%;
     right: 42%;
+    cursor: pointer;
+}
+.container-for-break-or-work-info{
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+    font-family: 'good';
+    color: white;
+    font-size: 16px;
+    font-weight: bolder;
 }
