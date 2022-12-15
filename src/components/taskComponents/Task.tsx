@@ -27,7 +27,7 @@ function Task() {
     return (
 
         <div className="task-main-container">
-            <p>Your Tasks</p>
+            <p>Your Tasks:</p>
             
            
             {Alltask.map((value, id) => {

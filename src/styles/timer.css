@@ -13,36 +13,8 @@
     display: flex;
     justify-content: center;
 }
-.pomodoro-button{
-    border: none;
-    color: white;
-    margin: 0px;
-    border-radius: 4px;
-    font-family: 'good';
-    font-size: 20px;
-    padding: 2px 12px;
-    height: 36px;
-    cursor: pointer;
-    background: none;
-    box-shadow: none;
-    font-weight: 500;
-    background-color: rgba(255, 255, 255, 0.1); 
-}
-.shortBreak-button{
-    border: none;
-    color: white;
-    margin: 0px;
-    border-radius: 4px;
-    font-family: 'good';
-    font-size: 20px;
-    padding: 2px 12px;
-    height: 36px;
-    cursor: pointer;
-    background: none;
-    box-shadow: none;
-    font-weight: 500;
-}
-.longBreak-button{
+
+.button{
     border: none;
     color: white;
     margin: 0px;
@@ -108,4 +80,7 @@
     color: white;
     font-size: 16px;
     font-weight: bolder;
+}
+.active{
+    background:rgba(255, 255, 255, 0.1);
 }

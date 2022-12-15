@@ -4,36 +4,38 @@ import skipIcon from "../icons/forward.png"
 interface Props {
     mainPageRef: React.RefObject<HTMLDivElement | null>
 }
-
+const classes = ["pomodoro", "shortBreak", "LongBreak"]
 const Timer: React.FC<Props> = ({ mainPageRef }) => {
 
     const buttonPomodoroRef = useRef<HTMLButtonElement>(null)
     const buttonShortBreakRef = useRef<HTMLButtonElement>(null)
     const longBreakButtonRef = useRef<HTMLButtonElement>(null)
     const [time, setTime] = useState<number>(3);
-    const [IsStarted, setStarted] = useState<boolean>(false);
-    const [minutes, setMinutes] = useState<number>(25);
-    const [seconds, setSeconds] = useState<number>(0);
+    const [isStarted, setStarted] = useState<boolean>(false);
     const [howManyShortBreaks, sethowManyShortBreaks] = useState<number>(0)
     const [whichPhaseIsNow, setWhichPhaseIsNow] = useState<number>(0)
-
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
     useEffect(() => {
-        if (IsStarted) {
-            const TimeInterval = setInterval(() => {
-                setTime((time) => time - 1)
+        if (!isStarted) {
+            return
+        }
+        const TimeInterval = setInterval(() => {
+            setTime((time) => time - 1)
 
-            }, 1000)
-            return () => {
-                clearInterval(TimeInterval)
-            }
+        }, 1000)
+        return () => {
+            clearInterval(TimeInterval)
         }
 
-    }, [IsStarted])
+
+    }, [isStarted])
 
     useEffect(() => {
-        setMinutes(() => Math.floor(time / 60))
-        setSeconds(() => time % 60)
-        if (time <= 0) {
+
+        if (time > 0) {
+            return
+        }
             if (whichPhaseIsNow === 0) {
                 if (howManyShortBreaks < 3) {
                     shortBreakPhase()
@@ -50,14 +52,14 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
                 sethowManyShortBreaks(0)
                 pomodoroPhase()
             }
-        }
+        
     }, [time])
 
     const startedCounting = (): void => {
-        if (!IsStarted) {
+        if (!isStarted) {
             setStarted(true)
         }
-        if (IsStarted) {
+        if (isStarted) {
             setStarted(false)
         }
     }
@@ -102,15 +104,6 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
         if (mainPageRef.current != null) {
             mainPageRef.current.style.background = "rgb(186, 73, 73)"
         }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "none"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "none"
-        }
         setWhichPhaseIsNow(0)
         setTime(8)
     }
@@ -118,15 +111,6 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
     const shortBreakPhase = (): void => {
         if (mainPageRef.current != null) {
             mainPageRef.current.style.background = "rgb(56, 133, 138)"
-        }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "none"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "none"
         }
         setTime(8)
         setWhichPhaseIsNow(1)
@@ -137,35 +121,27 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
         if (mainPageRef.current != null) {
             mainPageRef.current.style.background = "rgb(57, 112, 151)"
         }
-        if (buttonPomodoroRef.current != null) {
-            buttonPomodoroRef.current.style.background = "none"
-        }
-        if (buttonShortBreakRef.current != null) {
-            buttonShortBreakRef.current.style.background = "none"
-        }
-        if (longBreakButtonRef.current != null) {
-            longBreakButtonRef.current.style.background = "rgba(255, 255, 255, 0.1)"
-        }
+
         setTime(8)
         setWhichPhaseIsNow(2)
     }
     return (
-        <>
+        <div className={classes[whichPhaseIsNow]}>
             <section className="timer-section">
                 <div className="timer-container">
                     <div className="buttons-container">
-                        <button ref={buttonPomodoroRef} onClick={goToPomodoroSection} className="pomodoro-button">Pomodoro</button>
-                        <button ref={buttonShortBreakRef} onClick={goToShortBreakSection} className="shortBreak-button">Short Break</button>
-                        <button ref={longBreakButtonRef} onClick={goToLongBreakSection} className="longBreak-button">Long Break</button>
+                        <button ref={buttonPomodoroRef} onClick={goToPomodoroSection} className={`button ${whichPhaseIsNow === 0 ? "active" : ""}`}>Pomodoro</button>
+                        <button ref={buttonShortBreakRef} onClick={goToShortBreakSection} className={`button ${whichPhaseIsNow === 1 ? "active" : ""}`}>Short Break</button>
+                        <button ref={longBreakButtonRef} onClick={goToLongBreakSection} className={`button ${whichPhaseIsNow === 2 ? "active" : ""}`}>Long Break</button>
                     </div>
                     <div className="howMuchTimeLeft-container">
                         <p className="time-paragraph">{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</p>
                     </div>
                     <div className="start-button-container">
-                        {!IsStarted &&
+                        {!isStarted &&
                             <button onClick={startedCounting} className="start-timer-button">START</button>
                         }
-                        {IsStarted &&
+                        {isStarted &&
                             <>
                                 <button onClick={startedCounting} className="start-timer-button">Stop</button>
                                 <img onClick={skipPhase} className="skipIcon" src={skipIcon} />
@@ -186,7 +162,7 @@ const Timer: React.FC<Props> = ({ mainPageRef }) => {
 
 
             </div>
-        </>
+        </div>
     );
 }
 
